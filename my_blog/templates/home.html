@@ -11,11 +11,11 @@
     <h2>Latest Blog Posts</h2>
     
     <ul>
-     {%for post in posts%}
+     {%for blog_post in blog_posts%}
         <li>
-            <h3><a href="#">{{ post.title }}</a></h3>
-            <p><small>by {{post.author}} on {{post.created_at|date:"F j, Y"}}</small></p>
-            <p>{{post.content|truncatewords:30}}</p>
+            <a href="{% url 'post_detail' blog_post.id%}">{{ blog_post.title }}</a>
+            
+            <p>{{blog_post.content}}</p>
         </li>
       {%empty%}
          <p>No blog posts available yet. Check back later!</p>
