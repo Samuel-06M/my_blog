@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY BLOG</title>
+</head>
+<body>
+    <h1>Welcome to My Blog</h1>
+    <h2>Latest Blog Posts</h2>
+    
+    <ul>
+     {%for post in posts%}
+        <li>
+            <h3><a href="#">{{ post.title }}</a></h3>
+            <p><small>by {{post.author}} on {{post.created_at|date:"F j, Y"}}</small></p>
+            <p>{{post.content|truncatewords:30}}</p>
+        </li>
+      {%empty%}
+         <p>No blog posts available yet. Check back later!</p>
+       {% endfor %}
+    </ul>
+            
+</body>
+</html>
