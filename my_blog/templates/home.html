@@ -9,11 +9,13 @@
 <body>
     <h1>Welcome to My Blog</h1>
     <h2>Latest Blog Posts</h2>
+    <a href="{% url 'add_post' %}">Add New Post</a>
     
     <ul>
      {%for blog_post in blog_posts%}
         <li>
             <a href="{% url 'post_detail' blog_post.id%}">{{ blog_post.title }}</a>
+            <a href="{% url 'edit_post' blog_post.id%}">Edit</a>
             
             <p>{{blog_post.content}}</p>
         </li>
