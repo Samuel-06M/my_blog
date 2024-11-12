@@ -17,7 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from my_blog.views import home, add_post, edit_post, delete_post
-from . import views
+from .import views
+from .views import home, user_login, user_logout, user_signup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +27,7 @@ urlpatterns = [
     path('post/add/', add_post, name='add_post'),
     path('post/<int:post_id>/edit/', edit_post, name='edit_post'),
     path('post/<int:post_id>/delete/', delete_post, name='delete_post'),
+    path('login/', user_login, name='user_login'),
+    path('logout/', user_logout, name='user_logout'),
+    path('signup/', user_signup, name='user_signup'),
 ]
