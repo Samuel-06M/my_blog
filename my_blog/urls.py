@@ -18,11 +18,12 @@ from django.contrib import admin
 from django.urls import path
 from my_blog.views import home, add_post, edit_post, delete_post
 from .import views
-from .views import home, user_login, user_logout, user_signup
+from .views import home, user_login, user_logout, user_signup, search
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
+    path('search/', search, name='search'),
     path('post/<int:post_id>/', views.post_detail, name='post_detail'),
     path('post/add/', add_post, name='add_post'),
     path('post/<int:post_id>/edit/', edit_post, name='edit_post'),

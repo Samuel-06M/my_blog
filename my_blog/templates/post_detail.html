@@ -11,12 +11,33 @@
      <p>{{blog_post.created_at}}</p>
      <div>
         <p>{{blog_post.content}}</p>
+
      </div>
 
      {% if blog_post.author == user %}
          <a href="{% url 'edit_post' blog_post.id %}">Edit</a>
          <a href="{% url 'delete_post' blog_post.id %}">Delete</a>
       {% endif %}   
+
+    <h2>Comments</h2>  
+    {% for comment in comments %}
+        <div>
+            <strong>{{ comment.author.username }}:</strong>
+            <p>{{ comment.content }}</p>
+            <small>{{ comment.created_at }}</small>
+        </div>
+    {% empty %}
+         <p>No comments yet.</P>
+    {% endfor %}
+
+    <h3>Add a Comment</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+
 
 
      <a href="{% url 'home' %}">Back to Home</a>

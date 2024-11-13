@@ -1,5 +1,5 @@
 from django import forms
-from .models import BlogPost, Post
+from .models import BlogPost, Post, Comment
 from django.contrib.auth.forms import AuthenticationForm
 
 class LoginForm(AuthenticationForm):
@@ -16,4 +16,8 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'content']
         
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('content',)
         

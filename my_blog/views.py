@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import BlogPost, Post
+from .models import BlogPost, Post, Comment
 from django.shortcuts import redirect
-from .forms import BlogPostForm, PostForm, LoginForm
+from .forms import BlogPostForm, PostForm, LoginForm, CommentForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -51,11 +51,28 @@ def home(request):
 
 def post_detail(request, post_id):
     blog_post = get_object_or_404(BlogPost, id=post_id)
-    return render(request, 'post_detail.html', {'blog_post':blog_post})
+    comments = blog_post.comments.all()
+    comment_form = CommentForm()
+    
+    if request.method =='POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = blog_post
+            comment.author = request.user
+            comment.save()
+            messages.success(request, 'Your comment has been added!')
+            return redirect('post_detail', post_id=blog_post.id)
+
+    return render(request, 'post_detail.html', {
+     'blog_post':blog_post, 
+     'comments': comments, 
+     'comment_form': comment_form
+     })
 
 @login_required
 def add_post(request):
-    if request.method == 'POST':
+       if request.method == 'POST':
         form = BlogPostForm(request.POST)
         if form.is_valid():
             
@@ -64,10 +81,10 @@ def add_post(request):
             blog_post.save()
             
             return redirect('home')
-    else:
+       else:
             form = BlogPostForm()
             
-    return render(request, 'add_post.html', {'form': form})
+       return render(request, 'add_post.html', {'form': form})
 
 def edit_post(request, post_id):
     blog_post = get_object_or_404(BlogPost, id=post_id)
@@ -99,3 +116,13 @@ def delete_post(request, post_id):
         return redirect('home')
     
     return render(request, 'confirm_delete.html', {'blog_post': blog_post})
+
+def search(request):
+    query = request.GET.get('q')
+    if not request.user.is_authenticated:
+        
+        return redirect('user_login')
+    
+    results = BlogPost.objects.filter(title_icontains=query)
+    return render(request, 'search_results.html', {'results': results, 'query': query})
+        
