@@ -1,28 +1,30 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
     <title>MY BLOG</title>
 </head>
 <body>
     <h1>Welcome to My Blog</h1>
     {% if user.is_authenticated %}
-        <p>Welcome, {{ user.username }}! <a href="{% url 'user_logout' %}">Logout</p>
+        <p>Welcome, {{ user.username }}! <a class="button" href="{% url 'user_logout' %}">Logout</p>
     {% else %}
-            <p><a href="{% url 'user_login' %}">Login</a>
-                <a href="{% url 'user_signup' %}">Signup</a></p>
+            <p><a class="button" href="{% url 'user_login' %}">Login</a>
+                <a class="button" href="{% url 'user_signup' %}">Signup</a></p>
     {% endif %}
 
     <h2>Latest Blog Posts</h2>
-    <a href="{% url 'add_post' %}">Add New Post</a>
+    <a class="button" href="{% url 'add_post' %}">Add New Post</a>
     
     <ul>
      {%for blog_post in blog_posts%}
         <li>
             <a href="{% url 'post_detail' blog_post.id%}">{{ blog_post.title }}</a>
-            <a href="{% url 'edit_post' blog_post.id%}">Edit</a>
+            <a class="button" href="{% url 'edit_post' blog_post.id%}">Edit</a>
             
             <p>{{blog_post.content}}</p>
         </li>
